@@ -21,8 +21,10 @@ class HashTable:
     """
 
     def __init__(self, capacity):
-        # Your code here
-
+        self.capacity = capacity 
+        #this hashtable represents a list of lists, for 
+        # i in range of capacity
+        self.hashTable = [None] * capacity  
 
     def get_num_slots(self):
         """
@@ -57,12 +59,10 @@ class HashTable:
 
 
     def djb2(self, key):
-        """
-        DJB2 hash, 32-bit
-
-        Implement this, and/or FNV-1.
-        """
-        # Your code here
+        hash = 5381
+        for c in key:
+            hash = (hash * 33) + ord(c)
+        return hash
 
 
     def hash_index(self, key):
@@ -71,6 +71,10 @@ class HashTable:
         between within the storage capacity of the hash table.
         """
         #return self.fnv1(key) % self.capacity
+        #basically runs a specific key through the djb2 function, gets an integer value,
+        #  then takes module(whatever capacity is) of that integer value, and tells where
+        # specific key should be within hash table, by returning specific index 
+        
         return self.djb2(key) % self.capacity
 
     def put(self, key, value):
@@ -80,10 +84,58 @@ class HashTable:
         Hash collisions should be handled with Linked List Chaining.
 
         Implement this.
+
         """
-        # Your code here
+        #so given key should return a hash_index, and then you just want to store the 
+        # specific value at that index , so like "Jesse": "Hero", Hero is the value, 
+        # Jesse is the key, so let's use the Hash_index to store the value of given key
+        
+        #index position in table
+        # get index from hash_index function, based off djb2 func
+        # use that index in hashtable to append specified value
+        #by using the HashTableEntry class with a key and value
+        
+        
+
+        index = self.hash_index(key)
+        
+        
+        #node = self.hashTable[index]
+        
+        # so if is value at specific index is empty, 
+        # use HashTableEntry Class to input value specified by key, 
+        self.hashTable[index] =  HashTableEntry(key, value)
+        
+        #if node is None:
+        
+        #    self.hashTable[index] = HashTableEntry(key, value)
+		    
+        #    return  
+        #else:
+
+        #    self.hashTable[index] = HashTableEntry(key, value)
+		    
+        #    return  
 
 
+        #set new variable equal to the node's value 
+        #current = node
+	    #if the node you're looking to enter the info on 
+        #already has something stored inside of it, 
+
+        #while node is not None:
+        #    current = node
+		    
+        #    node = node.next
+	# Add a new node at the end of the list with provided key/value
+        #current.next = HashTableEntry(key, value)
+        
+
+        
+        
+      
+
+        
     def delete(self, key):
         """
         Remove the value stored with the given key.
@@ -92,7 +144,16 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        index = self.hash_index(key)
+        node = self.hashTable[index]
+
+        if node is None:
+            print("Warning, not found")
+        else:
+            
+            node.value = None
+
+        
 
 
     def get(self, key):
@@ -104,6 +165,14 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        # node represents the object at the point where the index is
+        #request value specific to index that key and hash function bring you to
+        index = self.hash_index(key)
+        node = self.hashTable[index]
+        if node is None:
+            return None
+        else:
+            return node.value
 
 
     def resize(self, new_capacity):
