@@ -100,35 +100,70 @@ class HashTable:
         index = self.hash_index(key)
         
         
-        #node = self.hashTable[index]
+        node = self.hashTable[index]
         
         # so if is value at specific index is empty, 
         # use HashTableEntry Class to input value specified by key, 
-        self.hashTable[index] =  HashTableEntry(key, value)
         
-        #if node is None:
         
-        #    self.hashTable[index] = HashTableEntry(key, value)
+        
+        # if the specific index is empty
+        #insert actual HashTableEntry class instance with a key and value
+        if node is None:
+        
+            self.hashTable[index] = HashTableEntry(key, value)
 		    
-        #    return  
-        #else:
+            return  
 
-        #    self.hashTable[index] = HashTableEntry(key, value)
-		    
-        #    return  
+        # if the specific index is not empty, set a variable = to the index called 
+        # whatever the hell you want, in this case, current
+        # current means absolutely nothing, besides a reference point to the specific
+        # index which your value has returned, and in this case, = to node as well
+        
+        # so i THINK that this outside node is set to whenever the "current" inside
+        # of the loop is set to, which is why it has to be set outside as well
+        # when current inside of the loop is set to the next node's position,
+        # the current outside of the loop is also set to that node, so that when you 
+        # exit the while loop, and hit the None value,
+        # you can actually use current's position to insert the following Node
+        current = node
+	    
+        while node is not None:
+            #this just allows you to replace old value with new value, if key is same    
+            if node.key == key:
+                self.hashTable[index] = HashTableEntry(key, value)
 
+            
+            
+            current = node
 
-        #set new variable equal to the node's value 
-        #current = node
-	    #if the node you're looking to enter the info on 
-        #already has something stored inside of it, 
+            #this is like saying the index = the next index 
+            node = node.next
+		    #so this is how a while loop works: Current is a variable representing 
+            #the index position. While the index position is filled, node
+            # aka the index position, moves to the next index position,
+            # and if that position is once again filled,  you move to the beginning of the
+            # while loop, and set "current"'s index position
+            # again equal to that new variable, node, it scrolls along as node scrolls along
+            # but always one index position behind node
 
-        #while node is not None:
-        #    current = node
-		    
-        #    node = node.next
-	# Add a new node at the end of the list with provided key/value
-        #current.next = HashTableEntry(key, value)
+            # the index position then scrolls along the linked list, 
+            # until it finds a NONE value
+            # you are then kicked out of the WHILE LOOP, and of course you have to set 
+            #current.next's position to the node.next's position, 
+            # because when you exit the while loop,
+            # you do so from the bottom, which means current hasn't 
+            # been updated into node's next index yet
+            
+            # so you exit the while loop, 
+            # set current.next equal to the nodes index value which
+            # equaled None, and then you simply insert the HashTableEntry, or 
+            # node class with key and value, as before
+            
+	
+    # Basically, the node is the scroller through the linked list, and current
+    # is the object
+        current.next = HashTableEntry(key, value)
         
 
         
@@ -146,12 +181,52 @@ class HashTable:
         """
         index = self.hash_index(key)
         node = self.hashTable[index]
-
-        if node is None:
-            print("Warning, not found")
-        else:
+        #if the key's value equals specified value,
+        # make the value at that index = None,
+        # return the value
+        if node.key == key:
             
             node.value = None
+            value = node.value
+            return value
+        
+        current = node
+	    
+        while node.key != key:
+                       
+            current = node
+            
+            node = node.next
+
+            if node.key is None:
+                return None
+            else:
+                result = node.value
+                current.next = current.next.next 
+                return result 
+
+                #set the previous's next value = node.next's value
+                # and return the value of Node,
+                # this will sever the connection to the Node, and basically delete it
+
+                
+        
+        
+        
+        #if node is None:
+        #    print("Warning, not found")
+        #    return node 
+        
+        #else:
+
+            
+        #    node.value = None
+
+        #so if you scroll to the index position where the value is supposed to be
+        # but you don't see the value, becasue another value is in it's spot,
+        # you have to scroll along the linked list until you get to the specific value 
+        # represented by the key, and THEN delete the node by basically making 
+        # the connection to the Node non existent    
 
         
 
@@ -169,10 +244,24 @@ class HashTable:
         #request value specific to index that key and hash function bring you to
         index = self.hash_index(key)
         node = self.hashTable[index]
-        if node is None:
-            return None
-        else:
-            return node.value
+        #head to the index value specified by the key:
+        # if the node is filled but the key is not the specified key,
+        # scroll alone the linked list from the starting index, one by one
+        #if you reach none and have not yet found the key, just return None, 
+        # meaning you did not find the value for this specific key
+        # otherwise, if you find the key within this linked list, return the value
+        #while node is not None and node.key != key:
+        if node.key == key:
+            return node.value 
+        
+        while  node.key != key:
+
+            node = node.next 
+
+            if node is None:
+                return None
+            else:
+                return node.value
 
 
     def resize(self, new_capacity):
