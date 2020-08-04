@@ -25,6 +25,10 @@ class HashTable:
         #this hashtable represents a list of lists, for 
         # i in range of capacity
         self.hashTable = [None] * capacity  
+        self.size = 0
+        self.new_capacity = 0
+        self.upperthresh = .7
+        self.lowerthresh = .2
 
     def get_num_slots(self):
         """
@@ -36,7 +40,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        return self.capacity
 
 
     def get_load_factor(self):
@@ -46,6 +50,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        return self.size / self.capacity 
 
 
     def fnv1(self, key):
@@ -112,6 +117,7 @@ class HashTable:
         if node is None:
         
             self.hashTable[index] = HashTableEntry(key, value)
+            self.size +=1
 		    
             return  
 
@@ -132,6 +138,7 @@ class HashTable:
             #this just allows you to replace old value with new value, if key is same    
             if node.key == key:
                 self.hashTable[index] = HashTableEntry(key, value)
+                
 
             
             
@@ -164,6 +171,7 @@ class HashTable:
     # Basically, the node is the scroller through the linked list, and current
     # is the object
         current.next = HashTableEntry(key, value)
+        self.size +=1
         
 
         
@@ -188,6 +196,7 @@ class HashTable:
             
             node.value = None
             value = node.value
+            self.size -= 1
             return value
         
         current = node
@@ -203,6 +212,7 @@ class HashTable:
             else:
                 result = node.value
                 current.next = current.next.next 
+                self.size -=1
                 return result 
 
                 #set the previous's next value = node.next's value
@@ -239,6 +249,7 @@ class HashTable:
 
         Implement this.
         """
+        #self.resize
         # Your code here
         # node represents the object at the point where the index is
         #request value specific to index that key and hash function bring you to
@@ -272,6 +283,54 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        # new capacity is going to turn into capacity
+
+        #if new_capacity / self.capacity > self.upperthresh:
+        #    self.capacity = self.capacity * 2
+        #    self.size = 0
+
+
+        #if new_capacity / self.capacity < self.lowerthresh:
+        #    self.capacity = self.capacity / 2
+        #    self.size = 0 
+        self.capacity = new_capacity
+        
+        storage = self.hashTable 
+        
+        
+        
+        self.hashTable = [None] * new_capacity  
+
+        
+       
+       # have to scroll through linked list in some cases to find elements to 
+       # recalculate values, hence this is the point of item.next, if there are more elements
+       # inserted into the list, than the size of the list itself, you need to loop through 
+       # linked lists to find those extra elements before you can rehash them
+       
+
+        for item in storage:
+            while item is not None:
+                self.put(item.key, item.value)
+                item = item.next 
+
+            
+        
+        # now I want to use the hash_index function to recalculate the index values
+        # for the values i already have 
+
+        
+
+         
+        
+        
+
+        
+
+
+
+         
+
 
 
 
