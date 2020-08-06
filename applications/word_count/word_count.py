@@ -1,6 +1,29 @@
 def word_count(s):
     # Your code here
 
+    d = {}
+    ignored = [", ",",  ",", ".",   "+", "=", "/",  
+    "|", "[", "]", "{", "}", "(", ")", "*", "^", "&"]
+    
+    for c in s:
+        c = s.split()
+        
+        if c.isspace():
+            continue
+        
+        if c in ignored:
+            continue
+
+        c = c.lower()
+
+        if c not in d:
+            d[c] = 0
+
+        d[c] +=1
+    
+    return d         
+
+    
 
 
 if __name__ == "__main__":
